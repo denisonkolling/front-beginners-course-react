@@ -11,18 +11,18 @@ const Wrapper = styled.div`
 `;
 
 interface HangmanWordProps {
-	wors: string
+	word: string
+	guessedLetters: string[]
 }
 
-const HangmanWord = ({word}: HangmanWordProps ) => {
+const HangmanWord = ({word, guessedLetters}: HangmanWordProps ) => {
 
-	const guessLetters = ['a', 'm', 'o'];
 
 	return (
 		<Wrapper>
 			{word.split('').map((letter, index) => (
 				<span style={{ borderBottom: '0.05em solid white'}} key={index}>
-				<span style={{ visibility: guessLetters.includes(letter) ? 'visible' : 'hidden'}}>{letter}</span>
+				<span style={{ visibility: guessedLetters.includes(letter) ? 'visible' : 'hidden'}}>{letter}</span>
 				</span>
 			))}
 		</Wrapper>
