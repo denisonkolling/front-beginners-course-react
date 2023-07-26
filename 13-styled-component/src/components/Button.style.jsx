@@ -5,8 +5,7 @@ export const StyledButton = styled.button`
 	width: 100px;
 	height: 60px;
 	border-radius: 10px;
-	background-color: ${(prop) =>
-		prop.backgroundColor ? prop.backgroundColor : 'gold'};
+	background-color: ${(prop) =>	prop.backgroundColor ? prop.backgroundColor : 'gold'};
 	opacity: 0.75;
 	cursor: pointer;
 	color: whitesmoke;
