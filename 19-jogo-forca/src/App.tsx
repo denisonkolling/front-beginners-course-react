@@ -2,11 +2,12 @@ import './App.css';
 import HangmanDrawing from './components/hangman-drawing';
 import HangmanWord from './components/hangman-word';
 import Keyboard from './components/keyboard';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 const words = ['padaria', 'caneca', 'bola', 'caneta', 'ilha', 'cidade'];
 
 function App() {
+
 	const [wordToGuess, setWordToGuess] = useState(() => {
 		return words[Math.floor(Math.random() * words.length)];
 	});
@@ -17,11 +18,18 @@ function App() {
 		(letter) => !wordToGuess.includes(letter)
 	);
 
-	function addGuessedLetters(letter: string) {
-		if (guessedLetters.includes(letter)) return;
+	const correctGuesses = guessedLetters.filter((letter) =>
+		wordToGuess.includes(letter)
+	);
 
-		setGuessedLetters((guessedLetters) => [...guessedLetters, letter]);
-	}
+	const addGuessedLetters = useCallback(
+		(letter: string) => {
+			if (guessedLetters.includes(letter)) return;
+
+			setGuessedLetters((guessedLetters) => [...guessedLetters, letter]);
+		},
+		[guessedLetters]
+	);
 
 	useEffect(() => {
 		const handler = ((e: KeyboardEvent) => {
@@ -32,19 +40,19 @@ function App() {
 			e.preventDefault();
 			addGuessedLetters(key);
 		}) as unknown as EventListener;
-		
+		console.log('ativou event listener');
 		document.addEventListener('keypress', handler);
 
 		return () => {
 			document.removeEventListener('keypress', handler);
 		};
-	}, []);
+	}, [guessedLetters]);
 
 	return (
 		<>
 			<HangmanDrawing numberOfGuesses={incorrectGuesses.length} />
 			<HangmanWord guessedLetters={guessedLetters} word={wordToGuess} />
-			<Keyboard />
+			<Keyboard activeLetters={correctGuesses} inactiveLetters={incorrectGuesses} addGuessedLetters={addGuessedLetters}/>
 		</>
 	);
 }
