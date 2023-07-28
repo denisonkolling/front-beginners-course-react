@@ -7,7 +7,6 @@ import { useState, useEffect, useCallback } from 'react';
 const words = ['padaria', 'caneca', 'bola', 'caneta', 'ilha', 'cidade'];
 
 function App() {
-
 	const [wordToGuess, setWordToGuess] = useState(() => {
 		return words[Math.floor(Math.random() * words.length)];
 	});
@@ -22,9 +21,14 @@ function App() {
 		wordToGuess.includes(letter)
 	);
 
+	const isLoser = incorrectGuesses.length >= 6;
+	const isWinner = wordToGuess
+		.split('')
+		.every((letter) => guessedLetters.includes(letter));
+
 	const addGuessedLetters = useCallback(
 		(letter: string) => {
-			if (guessedLetters.includes(letter)) return;
+			if (guessedLetters.includes(letter) || isLoser || isWinner) return;
 
 			setGuessedLetters((guessedLetters) => [...guessedLetters, letter]);
 		},
@@ -50,9 +54,18 @@ function App() {
 
 	return (
 		<>
+			<h3>
+				{isLoser && 'Você perdeu!😭 Atualize a página para um novo jogo...'}
+			</h3>
+			<h2>{isWinner && 'Parabéns você venceu!🚀👏🎉'}</h2>
 			<HangmanDrawing numberOfGuesses={incorrectGuesses.length} />
 			<HangmanWord guessedLetters={guessedLetters} word={wordToGuess} />
-			<Keyboard activeLetters={correctGuesses} inactiveLetters={incorrectGuesses} addGuessedLetters={addGuessedLetters}/>
+			<Keyboard
+				disabled={isLoser || isWinner}
+				activeLetters={correctGuesses}
+				inactiveLetters={incorrectGuesses}
+				addGuessedLetters={addGuessedLetters}
+			/>
 		</>
 	);
 }

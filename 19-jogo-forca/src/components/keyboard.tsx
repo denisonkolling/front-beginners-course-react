@@ -1,11 +1,13 @@
 import styled from 'styled-components';
 
 const keyboard = ({
+  disabled,
 	activeLetters,
 	inactiveLetters,
 	addGuessedLetters,
 }: KeyBoardProps) => {
 	interface KeyBoardProps {
+    disabled?: boolean,
 		activeLetters: string[];
 		inactiveLetters: string[];
 		addGuessedLetters: (letter: string) => void;
@@ -80,7 +82,7 @@ const keyboard = ({
 						onClick={() => addGuessedLetters(letter)}
 						isActive={isActive && isInactive}
 						key={letter}
-            disabled={!(isActive && isInactive)}
+            disabled={!(isActive && isInactive) || disabled}
 			      >
 						{letter.toUpperCase()}
 					</Button>
