@@ -1,11 +1,6 @@
 import styled from 'styled-components';
 
-const keyboard = ({
-  disabled,
-	activeLetters,
-	inactiveLetters,
-	addGuessedLetters,
-}: KeyBoardProps) => {
+const keyboard = ({  disabled,	activeLetters,	inactiveLetters,	addGuessedLetters,}: KeyBoardProps) => {
 	interface KeyBoardProps {
     disabled?: boolean,
 		activeLetters: string[];
